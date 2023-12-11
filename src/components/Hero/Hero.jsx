@@ -1,14 +1,13 @@
-import Articles from "./Articles"
-import Topics from "./Topics"
-
+import Articles from "./Articles";
+import Topics from "./Topics";
 
 function Hero() {
   return (
     <div>
-      <Topics/>
-      <Articles/>
+      <Topics />
+      <Articles />
     </div>
-  )
+  );
 }
 
-export default Hero
+export default Hero;
