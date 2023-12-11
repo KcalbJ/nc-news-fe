@@ -6,15 +6,16 @@ function App() {
   
 
   return (
-    <>
-    <Header/>
+    <div className="min-h-screen bg-gray-100">
+      <Header/>
     
- 
-    <Routes>
+      <Routes>
         <Route path="/" element={<Hero />} />
       </Routes>
  
-    </>
+    </div>
+ 
+   
   )
 }
 

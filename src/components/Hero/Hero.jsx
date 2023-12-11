@@ -1,8 +1,13 @@
+import Articles from "./Articles"
+import Topics from "./Topics"
 
 
 function Hero() {
   return (
-    <div>Hero</div>
+    <div>
+      <Topics/>
+      <Articles/>
+    </div>
   )
 }
 
