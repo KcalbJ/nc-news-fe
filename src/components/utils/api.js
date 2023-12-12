@@ -16,6 +16,15 @@ export const getArticles = async () => {
   }
 };
 
+export const getArticleById = async (articleId) => {
+  try {
+    const response = await api.get(`/articles/${articleId}`);
+    return response.data.article
+  } catch (error) {
+    console.error(`Error fetching article with ID ${articleId}`, error);
+    throw error;
+  }
+};
 
 export const getUserById = async () => {
   try {
