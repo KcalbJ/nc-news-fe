@@ -1,4 +1,8 @@
-import { getArticleById, getCommentsByArticleId } from '../utils/api';
+import {
+  getArticleById,
+  getCommentsByArticleId,
+  voteOnArticle,
+} from "../utils/api";
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { GoComment } from "react-icons/go";
@@ -12,18 +16,42 @@ function ArticlePage() {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const commentsSectionRef = useRef(null);
-
+  const [votes, setVotes] = useState(0);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const scrollToComments = () => {
     if (commentsSectionRef.current) {
-      commentsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+      commentsSectionRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleVoteClick = (voteValue) => {
+    setVotes((currVotes) => currVotes + voteValue);
+
+    voteOnArticle(articleId, voteValue)
+      .then(() => {
+        setErrorMessage(null);
+      })
+      .catch((err) => {
+        setVotes((currVotes) => currVotes - voteValue);
+        console.error("Error:", err);
+        setErrorMessage("Failed to submit vote. Please try again.");
+      });
+  };
+
+  const handleUpVoteClick = () => {
+    handleVoteClick(1);
+  };
+
+  const handleDownVoteClick = () => {
+    handleVoteClick(-1);
   };
 
   useEffect(() => {
     setIsLoading(true);
     getArticleById(articleId).then((articleById) => {
       setArticle(articleById);
+      setVotes(articleById.votes);
       setIsLoading(false);
     });
   }, [articleId]);
@@ -63,15 +91,22 @@ function ArticlePage() {
             />
 
             <div className="flex flex-col justify-center pr-2 ">
-              <PiArrowFatUpLight className="w-6 h-6 " />
-              <p className="text-center">{article.votes}</p>
-              <PiArrowFatDownLight className="w-6 h-6" />
+              <button onClick={handleUpVoteClick} className="w-8 h-8 mr-2">
+                <PiArrowFatUpLight className="w-full h-full" />
+              </button>
+              <p className="text-lg font-semibold">{votes}</p>
+              <button onClick={handleDownVoteClick} className="w-8 h-8 m4-2">
+                <PiArrowFatDownLight className="w-full h-full" />
+              </button>
             </div>
           </div>
           <div className="flex items-center break-words pl-6 pr-6">
             <p className="text-m">{article.body}</p>
           </div>
-          <div className="flex flex-row p-6 border-b-4 cursor-pointer" onClick={scrollToComments}>
+          <div
+            className="flex flex-row p-6 border-b-4 cursor-pointer"
+            onClick={scrollToComments}
+          >
             <GoComment alt="icon for comments" className="w-6 h-6" />
             <p className="text-sm"> {article.comment_count} comments</p>
           </div>
@@ -103,6 +138,7 @@ function ArticlePage() {
               <p>No comments yet.</p>
             )}
           </div>
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </div>
       ) : (
         <p>Article not found</p>
