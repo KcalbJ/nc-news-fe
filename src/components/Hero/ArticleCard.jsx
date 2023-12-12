@@ -1,12 +1,11 @@
 import { GoComment } from "react-icons/go";
 import { PiArrowFatUpLight, PiArrowFatDownLight } from "react-icons/pi";
 import { getTimeDifference } from "../utils/dateDifference";
-import { Link } from 'react-router-dom';
-
+import { Link } from "react-router-dom";
 
 function ArticleCard({ article }) {
   return (
-    <div className="mt-4 rounded-lg border mx-auto text-card-foreground shadow-sm bg-white flex flex-col">
+    <div className="mt-4 rounded-lg border mx-auto shadow-sm bg-white flex flex-col">
       <div className="flex flex-col  space-y-1.5 p-6">
         <h3 className="text-2xl font-semibold leading-none tracking-tight">
           {article.title}
@@ -29,9 +28,12 @@ function ArticleCard({ article }) {
         </div>
       </div>
       <div className="flex items-center pl-6">
-      <Link to={`/articles/${article.article_id}`} className="text-blue-500 hover:underline">
-        Read More
-      </Link>
+        <Link
+          to={`/articles/${article.article_id}`}
+          className="text-blue-500 hover:underline"
+        >
+          Read More
+        </Link>
       </div>
       <div className="flex flex-row p-6">
         <GoComment alt="icon for comments" className="w-6 h-6" />
