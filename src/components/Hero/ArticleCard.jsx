@@ -1,5 +1,6 @@
 import { GoComment } from "react-icons/go";
-import { PiArrowFatUpLight, PiArrowFatDownLight } from "react-icons/pi";
+import { FiThumbsUp } from "react-icons/fi";
+
 import { getTimeDifference } from "../utils/dateDifference";
 import { Link } from "react-router-dom";
 
@@ -22,9 +23,8 @@ function ArticleCard({ article }) {
           alt="article image"
         />
         <div className="flex flex-col justify-center">
-          <PiArrowFatUpLight className="w-6 h-6" />
           <p className="text-center">{article.votes}</p>
-          <PiArrowFatDownLight className="w-6 h-6" />
+          <FiThumbsUp className="w-6 h-6" />
         </div>
       </div>
       <div className="flex items-center pl-6">

@@ -1,10 +1,16 @@
-import { getArticleById, getCommentsByArticleId } from '../utils/api';
+import {
+  getArticleById,
+  getCommentsByArticleId,
+  voteOnArticle,
+} from "../utils/api";
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { GoComment } from "react-icons/go";
 import { PiArrowFatUpLight, PiArrowFatDownLight } from "react-icons/pi";
 import { getTimeDifference } from "../utils/dateDifference";
 import CommentCard from "./CommentCard";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ArticlePage() {
   const { articleId } = useParams();
@@ -12,11 +18,30 @@ function ArticlePage() {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const commentsSectionRef = useRef(null);
+  const [votes, setVotes] = useState(0);
 
+  const handleVoteClick = (voteValue) => {
+    setVotes((currVotes) => currVotes + voteValue);
+  
+    voteOnArticle(articleId, voteValue)
+      .then(() => {})
+      .catch((error) => {
+        setVotes((prevVotes) => prevVotes - voteValue);
+        toast.error("Error updating votes, please try again");
+      });
+  };
+  
+  const handleUpVoteClick = () => {
+    handleVoteClick(1);
+  };
+  
+  const handleDownVoteClick = () => {
+    handleVoteClick(-1);
+  };
 
   const scrollToComments = () => {
     if (commentsSectionRef.current) {
-      commentsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+      commentsSectionRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -24,6 +49,7 @@ function ArticlePage() {
     setIsLoading(true);
     getArticleById(articleId).then((articleById) => {
       setArticle(articleById);
+      setVotes(articleById.votes);
       setIsLoading(false);
     });
   }, [articleId]);
@@ -44,6 +70,7 @@ function ArticlePage() {
     );
   return (
     <div className="flex justify-center mx-auto max-w-2xl">
+      <ToastContainer />
       {article ? (
         <div className="mt-4 rounded-lg border shadow-sm bg-white flex flex-col">
           <div className="flex flex-col  space-y-1.5 p-6">
@@ -63,15 +90,22 @@ function ArticlePage() {
             />
 
             <div className="flex flex-col justify-center pr-2 ">
-              <PiArrowFatUpLight className="w-6 h-6 " />
-              <p className="text-center">{article.votes}</p>
-              <PiArrowFatDownLight className="w-6 h-6" />
+              <button onClick={handleUpVoteClick} className="w-8 h-8 mr-2">
+                <PiArrowFatUpLight className="w-full h-full" />
+              </button>
+              <p className="text-lg font-semibold ml-2 ">{votes}</p>
+              <button onClick={handleDownVoteClick} className="w-8 h-8 mr-2">
+                <PiArrowFatDownLight className="w-full h-full" />
+              </button>
             </div>
           </div>
           <div className="flex items-center break-words pl-6 pr-6">
             <p className="text-m">{article.body}</p>
           </div>
-          <div className="flex flex-row p-6 border-b-4 cursor-pointer" onClick={scrollToComments}>
+          <div
+            className="flex flex-row p-6 border-b-4 cursor-pointer"
+            onClick={scrollToComments}
+          >
             <GoComment alt="icon for comments" className="w-6 h-6" />
             <p className="text-sm"> {article.comment_count} comments</p>
           </div>
@@ -97,7 +131,7 @@ function ArticlePage() {
             <h4 className="text-lg font-semibold mb-2">Comments</h4>
             {comments.length > 0 ? (
               comments.map((comment) => (
-                <CommentCard key={comment.id} comment={comment} />
+                <CommentCard key={comment.comment_id} comment={comment} />
               ))
             ) : (
               <p>No comments yet.</p>

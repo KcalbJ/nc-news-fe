@@ -43,3 +43,17 @@ export const getCommentsByArticleId = async (articleId) => {
     );
   }
 };
+
+export const voteOnArticle = async (articleId, votes) => {
+  try {
+    const response = await api.patch(`/articles/${articleId}`, {
+      inc_votes: votes,
+    });
+    if (response.status === 200) {
+      return response.data.article;
+    }
+  } catch (error) {
+    console.error(`Error voting on article with ID ${articleId}`, error);
+    throw error;
+  }
+};
