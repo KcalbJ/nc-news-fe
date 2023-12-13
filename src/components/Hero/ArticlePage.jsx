@@ -9,6 +9,8 @@ import { GoComment } from "react-icons/go";
 import { PiArrowFatUpLight, PiArrowFatDownLight } from "react-icons/pi";
 import { getTimeDifference } from "../utils/dateDifference";
 import CommentCard from "./CommentCard";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ArticlePage() {
   const { articleId } = useParams();
@@ -17,34 +19,34 @@ function ArticlePage() {
   const [isLoading, setIsLoading] = useState(true);
   const commentsSectionRef = useRef(null);
   const [votes, setVotes] = useState(0);
-  const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleUpVoteClick = () => {
+    setVotes((currVotes) => currVotes + 1);
+
+    voteOnArticle(articleId, 1)
+      .then(() => {})
+      .catch((error) => {
+        setVotes((prevVotes) => prevVotes - 1);
+        toast.error("Error, please try again");
+      });
+  };
+
+  const handleDownVoteClick = () => {
+    setVotes((currVotes) => currVotes - 1);
+
+    voteOnArticle(articleId, -1)
+      .then(() => {})
+      .catch((error) => {
+        setVotes((prevVotes) => prevVotes + 1);
+
+        toast.error("Error please try again");
+      });
+  };
 
   const scrollToComments = () => {
     if (commentsSectionRef.current) {
       commentsSectionRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const handleVoteClick = (voteValue) => {
-    setVotes((currVotes) => currVotes + voteValue);
-
-    voteOnArticle(articleId, voteValue)
-      .then(() => {
-        setErrorMessage(null);
-      })
-      .catch((err) => {
-        setVotes((currVotes) => currVotes - voteValue);
-        console.error("Error:", err);
-        setErrorMessage("Failed to submit vote. Please try again.");
-      });
-  };
-
-  const handleUpVoteClick = () => {
-    handleVoteClick(1);
-  };
-
-  const handleDownVoteClick = () => {
-    handleVoteClick(-1);
   };
 
   useEffect(() => {
@@ -72,6 +74,7 @@ function ArticlePage() {
     );
   return (
     <div className="flex justify-center mx-auto max-w-2xl">
+      <ToastContainer />
       {article ? (
         <div className="mt-4 rounded-lg border shadow-sm bg-white flex flex-col">
           <div className="flex flex-col  space-y-1.5 p-6">
@@ -94,8 +97,8 @@ function ArticlePage() {
               <button onClick={handleUpVoteClick} className="w-8 h-8 mr-2">
                 <PiArrowFatUpLight className="w-full h-full" />
               </button>
-              <p className="text-lg font-semibold">{votes}</p>
-              <button onClick={handleDownVoteClick} className="w-8 h-8 m4-2">
+              <p className="text-lg font-semibold ml-2 ">{votes}</p>
+              <button onClick={handleDownVoteClick} className="w-8 h-8 mr-2">
                 <PiArrowFatDownLight className="w-full h-full" />
               </button>
             </div>
@@ -132,13 +135,12 @@ function ArticlePage() {
             <h4 className="text-lg font-semibold mb-2">Comments</h4>
             {comments.length > 0 ? (
               comments.map((comment) => (
-                <CommentCard key={comment.id} comment={comment} />
+                <CommentCard key={comment.comment_id} comment={comment} />
               ))
             ) : (
               <p>No comments yet.</p>
             )}
           </div>
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </div>
       ) : (
         <p>Article not found</p>
