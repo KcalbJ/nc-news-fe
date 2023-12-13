@@ -1,17 +1,10 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 import { IoPersonSharp } from "react-icons/io5";
-import { getUserById } from "../utils/api";
-
+import { useState } from "react";
 function UserIcon() {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    getUserById().then((userData) => {
-      setUser(userData);
-      setIsLoading(false);
-    });
-  }, []);
+  const { user, isLoading } = useContext(UserContext);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

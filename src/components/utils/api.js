@@ -57,3 +57,26 @@ export const voteOnArticle = async (articleId, votes) => {
     throw error;
   }
 };
+
+
+
+export const postComment = async (articleId, commentText) => {
+  try {
+    const response = await api.post(
+      `/articles/${articleId}/comments`,
+      commentText
+    );
+
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(
+      `Error posting comments for article with ID ${articleId}`,
+      error
+    );
+    throw error;
+  }
+};
+
+
