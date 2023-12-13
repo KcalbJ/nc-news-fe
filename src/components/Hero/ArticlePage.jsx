@@ -20,27 +20,23 @@ function ArticlePage() {
   const commentsSectionRef = useRef(null);
   const [votes, setVotes] = useState(0);
 
-  const handleUpVoteClick = () => {
-    setVotes((currVotes) => currVotes + 1);
-
-    voteOnArticle(articleId, 1)
+  const handleVoteClick = (voteValue) => {
+    setVotes((currVotes) => currVotes + voteValue);
+  
+    voteOnArticle(articleId, voteValue)
       .then(() => {})
       .catch((error) => {
-        setVotes((prevVotes) => prevVotes - 1);
-        toast.error("Error, please try again");
+        setVotes((prevVotes) => prevVotes - voteValue);
+        toast.error("Error updating votes, please try again");
       });
   };
-
+  
+  const handleUpVoteClick = () => {
+    handleVoteClick(1);
+  };
+  
   const handleDownVoteClick = () => {
-    setVotes((currVotes) => currVotes - 1);
-
-    voteOnArticle(articleId, -1)
-      .then(() => {})
-      .catch((error) => {
-        setVotes((prevVotes) => prevVotes + 1);
-
-        toast.error("Error please try again");
-      });
+    handleVoteClick(-1);
   };
 
   const scrollToComments = () => {
