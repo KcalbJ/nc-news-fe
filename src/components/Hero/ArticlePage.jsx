@@ -165,7 +165,11 @@ function ArticlePage() {
 
             {comments.length > 0 ? (
               comments.map((comment) => (
-                <CommentCard key={comment.comment_id} comment={comment} onDelete={handleCommentDelete} />
+                <CommentCard
+                  key={comment.comment_id}
+                  comment={comment}
+                  onDelete={handleCommentDelete}
+                />
               ))
             ) : (
               <p>No comments yet.</p>
