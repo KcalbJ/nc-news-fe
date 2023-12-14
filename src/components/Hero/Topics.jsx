@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getTopics } from "../utils/api";
 
@@ -18,8 +18,8 @@ function Topics() {
         {topics.map((topic) => (
           <Link
             key={topic.slug}
-           to={`/topics/${topic.slug}`}
-            className="inline-block px-12 py-3 text-sm font-medium text-white bg-violet-600 border border-violet-600 rounded active:text-violet-500 hover:bg-transparent hover:text-violet-600 focus:outline-none focus:ring"
+            to={`/topics/${topic.slug}`}
+            className="inline-block px-12 py-3 text-sm font-medium text-white bg-violet-600 border border-violet-600 rounded active:text-violet-500 hover:bg-transparent hover:text-violet-600 focus:bg-violet-900 focus:outline-none focus:ring"
           >
             <div>
               <h3>{topic.slug.toUpperCase()}</h3>

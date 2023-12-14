@@ -3,16 +3,20 @@ import axios from "axios";
 const BASE_URL = "https://nc-news-opvy.onrender.com/api";
 const api = axios.create({ baseURL: BASE_URL });
 
-export const getArticles = async (topicSlug) => {
+export const getArticles = async (topicSlug, sortBy, sortOrder) => {
   try {
-    const url = topicSlug ? `/articles/?topic=${topicSlug}` : "/articles";
+    const url = topicSlug
+      ? `/articles/?topic=${topicSlug}&sort_by=${sortBy}&order=${sortOrder}`
+      : `/articles/?sort_by=${sortBy}&order=${sortOrder}`;
+
     const response = await api.get(url);
-    console.log(response.data.articles)
+
     return response.data.articles;
   } catch (error) {
     console.error("Error fetching articles", error);
   }
 };
+
 export const getTopics = async () => {
   try {
     const response = await api.get("/topics");
@@ -94,10 +98,7 @@ export const deleteComment = async (commentId) => {
       return;
     }
   } catch (error) {
-    console.error(
-      `Error deleting comment`,
-      error
-    );
+    console.error(`Error deleting comment`, error);
     throw error;
   }
 };
