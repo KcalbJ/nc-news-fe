@@ -58,8 +58,6 @@ export const voteOnArticle = async (articleId, votes) => {
   }
 };
 
-
-
 export const postComment = async (articleId, commentText) => {
   try {
     const response = await api.post(
@@ -79,4 +77,18 @@ export const postComment = async (articleId, commentText) => {
   }
 };
 
+export const deleteComment = async (commentId) => {
+  try {
+    const response = await api.delete(`/comments/${commentId}`);
 
+    if (response.status === 204) {
+      return;
+    }
+  } catch (error) {
+    console.error(
+      `Error deleting comment`,
+      error
+    );
+    throw error;
+  }
+};
