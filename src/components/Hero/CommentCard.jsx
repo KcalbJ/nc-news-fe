@@ -5,7 +5,8 @@ import { useState, useContext } from "react";
 import { deleteComment } from "../utils/api";
 import { toast } from "react-toastify";
 import { FaRegTrashAlt } from "react-icons/fa";
-import DeleteModal from "./deleteModal";
+import DeletePopup from "./DeletePopup";
+
 
 function CommentCard({ comment, onDelete }) {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -59,7 +60,7 @@ function CommentCard({ comment, onDelete }) {
           )}
         </div>
       </div>
-      <DeleteModal 
+      <DeletePopup
         isOpen={isModalOpen}
         onRequestClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}

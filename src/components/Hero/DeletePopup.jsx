@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 
-function DeleteModal({ isOpen, onRequestClose, onConfirm }) {
+function DeletePopup({ isOpen, onRequestClose, onConfirm }) {
     return (
         <Modal className="text-center bg-white h-56 w-64  fixed top-1/2 left-1/2 right-1/2 rounded p-4 border-slate-400 border-2  border-solid"
           isOpen={isOpen}
@@ -17,4 +17,4 @@ function DeleteModal({ isOpen, onRequestClose, onConfirm }) {
       );
     }
 
-export default DeleteModal
+export default DeletePopup
