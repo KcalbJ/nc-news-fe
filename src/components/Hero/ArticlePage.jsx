@@ -69,6 +69,11 @@ function ArticlePage() {
       commentsSectionRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+  const handleCommentDelete = (deletedCommentId) => {
+    setComments((prevComments) =>
+      prevComments.filter((comment) => comment.comment_id !== deletedCommentId)
+    );
+  };
 
   useEffect(() => {
     setIsLoad(true);
@@ -160,7 +165,7 @@ function ArticlePage() {
 
             {comments.length > 0 ? (
               comments.map((comment) => (
-                <CommentCard key={comment.comment_id} comment={comment} />
+                <CommentCard key={comment.comment_id} comment={comment} onDelete={handleCommentDelete} />
               ))
             ) : (
               <p>No comments yet.</p>
