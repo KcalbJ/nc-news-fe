@@ -3,13 +3,22 @@ import axios from "axios";
 const BASE_URL = "https://nc-news-opvy.onrender.com/api";
 const api = axios.create({ baseURL: BASE_URL });
 
-export const getArticles = async () => {
+export const getArticles = async (topicSlug) => {
   try {
-    const response = await api.get("/articles");
-
+    const url = topicSlug ? `/articles/?topic=${topicSlug}` : "/articles";
+    const response = await api.get(url);
+    console.log(response.data.articles)
     return response.data.articles;
   } catch (error) {
     console.error("Error fetching articles", error);
+  }
+};
+export const getTopics = async () => {
+  try {
+    const response = await api.get("/topics");
+    return response.data.topics;
+  } catch (error) {
+    console.error("Error fetching topics", error);
   }
 };
 

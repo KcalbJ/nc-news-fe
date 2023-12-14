@@ -6,14 +6,15 @@ import { UserProvider } from "./components/context/UserContext";
 function App() {
   return (
     <UserProvider>
-    <div className="min-h-screen bg-gray-100">
-      <Header />
+      <div className="min-h-screen bg-gray-100">
+        <Header />
 
-      <Routes>
-        <Route path="/" element={<Hero />} />
-        <Route path="/articles/:articleId" element={<ArticlePage/>} />
-      </Routes>
-    </div>
+        <Routes>
+          <Route path="/" element={<Hero />} />
+          <Route path="/articles/:articleId" element={<ArticlePage />} />
+          <Route path="/topics/:topicSlug" element={<Hero />} />
+        </Routes>
+      </div>
     </UserProvider>
   );
 }
