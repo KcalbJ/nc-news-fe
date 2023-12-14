@@ -1,6 +1,7 @@
 import {
   getArticleById,
   getCommentsByArticleId,
+  postComment,
   voteOnArticle,
 } from "../utils/api";
 import { useEffect, useState, useRef } from "react";
@@ -11,18 +12,42 @@ import { getTimeDifference } from "../utils/dateDifference";
 import CommentCard from "./CommentCard";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 function ArticlePage() {
   const { articleId } = useParams();
   const [article, setArticle] = useState();
   const [comments, setComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoad, setIsLoad] = useState(true);
   const commentsSectionRef = useRef(null);
   const [votes, setVotes] = useState(0);
+  const [newComment, setNewComment] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const { user, isLoading } = useContext(UserContext);
+
+  const handleCommentChange = (event) => {
+    setNewComment(event.target.value);
+  };
+  const handleCommentSubmit = (event) => {
+    event.preventDefault();
+
+    setSubmitted(true);
+    postComment(articleId, { username: user.username, body: newComment })
+      .then((postedCom) => {
+        setComments((curComments) => [postedCom, ...curComments]);
+        toast.success("Comment posted successfully!");
+        setSubmitted(false);
+      })
+      .catch((error) => {
+        toast.error("Error posting comment, please try again");
+      });
+    setNewComment("");
+  };
 
   const handleVoteClick = (voteValue) => {
     setVotes((currVotes) => currVotes + voteValue);
-  
+
     voteOnArticle(articleId, voteValue)
       .then(() => {})
       .catch((error) => {
@@ -30,11 +55,11 @@ function ArticlePage() {
         toast.error("Error updating votes, please try again");
       });
   };
-  
+
   const handleUpVoteClick = () => {
     handleVoteClick(1);
   };
-  
+
   const handleDownVoteClick = () => {
     handleVoteClick(-1);
   };
@@ -46,28 +71,27 @@ function ArticlePage() {
   };
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoad(true);
     getArticleById(articleId).then((articleById) => {
       setArticle(articleById);
       setVotes(articleById.votes);
-      setIsLoading(false);
+      setIsLoad(false);
     });
   }, [articleId]);
 
   useEffect(() => {
-    if (articleId) {
-      getCommentsByArticleId(articleId).then((commentsData) => {
-        setComments(commentsData);
-      });
-    }
+    getCommentsByArticleId(articleId).then((commentsData) => {
+      setComments(commentsData);
+    });
   }, [articleId]);
 
-  if (isLoading)
+  if (isLoad)
     return (
       <p className="text-orange-400 text-2xl text-center mt-24 animate-bounce">
         Loading.....
       </p>
     );
+
   return (
     <div className="flex justify-center mx-auto max-w-2xl">
       <ToastContainer />
@@ -109,26 +133,31 @@ function ArticlePage() {
             <GoComment alt="icon for comments" className="w-6 h-6" />
             <p className="text-sm"> {article.comment_count} comments</p>
           </div>
-          <form className="mb-6 p-8">
+          <form className="mb-6 p-8" onSubmit={handleCommentSubmit}>
             <div className="py-2 px-4 mb-4 bg-gray-50 rounded-lg rounded-t-lg border border-gray-500">
               <label className="sr-only">Your comment</label>
               <textarea
                 id="comment"
                 rows="6"
-                className="px-0 w-full text-sm  bg-gray-50  text-gray-900 border-0 focus:ring-0 focus:outline-none"
+                value={newComment}
+                onChange={handleCommentChange}
+                className="px-0 w-full text-sm bg-gray-50 text-gray-900 border-0 focus:ring-0 focus:outline-none"
                 placeholder="Write a comment..."
                 required
               ></textarea>
             </div>
             <button
               type="submit"
-              className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
+              disabled={submitted}
+              onSubmit={handleCommentSubmit}
+              className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-black bg-slate-200 rounded-lg  hover:bg-slate-800 hover:text-white"
             >
-              Post comment
+              {submitted ? "Posting..." : "Post comment"}
             </button>
           </form>
           <div ref={commentsSectionRef} className="p-6 border-t-4">
             <h4 className="text-lg font-semibold mb-2">Comments</h4>
+
             {comments.length > 0 ? (
               comments.map((comment) => (
                 <CommentCard key={comment.comment_id} comment={comment} />

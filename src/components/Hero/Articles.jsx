@@ -16,7 +16,7 @@ function Articles() {
   return (
     <section className="p-4">
     {articles.map((article) => (
-        <ArticleCard key={article.index} article={article} />
+        <ArticleCard key={article.article_id} article={article} />
       ))}
   
   </section>
