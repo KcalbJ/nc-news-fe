@@ -52,7 +52,7 @@ function CommentCard({ comment, onDelete }) {
             <FaRegTrashAlt
               onClick={handleDeleteClick}
               className={` w-4 h-4 ${
-                isDeleting ? "text-slate-500" : "text-red-500"
+                isDeleting ? "text-slate-500 cursor-not-allowed" : "text-red-500 cursor-pointer"
               }`}
               role="button"
             />
