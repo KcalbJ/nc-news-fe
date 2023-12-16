@@ -16,11 +16,11 @@ function UserIcon() {
 
   return (
     <div className="">
-      <button className="flex items-center" onClick={toggleDropdown}>
+      <button className="flex items-center bg-slate-100 w-10 rounded-full h-10" onClick={toggleDropdown}>
         {isLoading ? (
-          <IoPersonSharp className="h-6 w-6" alt="User Avatar" />
+          <IoPersonSharp className="  h-6 w-6" alt="User Avatar" />
         ) : (
-          <img className="h-6 w-6" alt="User Avatar" src={user.avatar_url} />
+          <img className="h-6 w-6 ml-2" alt="User Avatar" src={user.avatar_url} />
         )}
       </button>
       {isOpen && (

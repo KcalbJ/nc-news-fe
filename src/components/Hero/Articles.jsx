@@ -2,6 +2,9 @@ import ArticleCard from "./ArticleCard";
 import { getArticles } from "../utils/api";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function Articles() {
   const { topicSlug } = useParams();
   const [articles, setArticles] = useState([]);
@@ -19,6 +22,10 @@ function Articles() {
         setIsLoading(false);
       })
       .catch((error) => {
+        toast.error("Error fetching articles, topic does not exist");
+        setArticles([]);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }, [topicSlug, sortBy, sortOrder, setSearchParams]);
@@ -32,9 +39,16 @@ function Articles() {
 
   if (isLoading) {
     return (
-      <p className="text-orange-400 text-2xl text-center mt-24 animate-bounce">
+      <p className="text-violet-400  text-2xl text-center mt-24 animate-bounce">
         Loading.....
       </p>
+    );
+  }
+  if (articles.length === 0 ) {
+    return (
+      <div className="flex text-violet-600 text-2xl mt-36 justify-center mx-auto max-w-2xl">
+        <p>No articles found for the selected topic</p>
+      </div>
     );
   }
 
@@ -65,6 +79,7 @@ function Articles() {
       {articles.map((article) => (
         <ArticleCard key={article.article_id} article={article} />
       ))}
+      <ToastContainer/>
     </section>
   );
 }

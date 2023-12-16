@@ -1,15 +1,42 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getTopics } from "../utils/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Topics() {
   const [topics, setTopics] = useState([]);
-
+  const [isLoad, setIsLoad] = useState(true);
   useEffect(() => {
-    getTopics().then((topicsArr) => {
-      setTopics(topicsArr);
-    });
-  }, []);
+    setIsLoad(true);
+    getTopics()
+      .then((topicsArr) => {
+        setTopics(topicsArr);
+      })
+      .catch((error) => {
+        setTopics([]); 
+        toast.error("Error fetching topics");
+      })
+      .finally(() => {
+        setIsLoad(false);
+      });
+  }, []); 
+
+  if (isLoad) {
+    return (
+      <p className="text-violet-400 text-2xl text-center mt-24 animate-bounce">
+        Loading.....
+      </p>
+    );
+  }
+
+  if (topics.length === 0) {
+    return (
+      <div className="flex  text-violet-600 text-7xl mt-2 justify-center mx-auto max-w-2xl">
+        <p>No topics found</p>
+      </div>
+    );
+  }
 
   return (
     <section>
@@ -27,6 +54,7 @@ function Topics() {
           </Link>
         ))}
       </div>
+      <ToastContainer/>
     </section>
   );
 }

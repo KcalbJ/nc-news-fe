@@ -14,6 +14,7 @@ export const getArticles = async (topicSlug, sortBy, sortOrder) => {
     return response.data.articles;
   } catch (error) {
     console.error("Error fetching articles", error);
+    throw error
   }
 };
 
@@ -23,6 +24,7 @@ export const getTopics = async () => {
     return response.data.topics;
   } catch (error) {
     console.error("Error fetching topics", error);
+    throw error
   }
 };
 

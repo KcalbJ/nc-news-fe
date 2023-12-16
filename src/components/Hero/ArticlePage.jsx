@@ -77,9 +77,16 @@ function ArticlePage() {
 
   useEffect(() => {
     setIsLoad(true);
-    getArticleById(articleId).then((articleById) => {
+    getArticleById(articleId)
+    .then((articleById) => {
       setArticle(articleById);
       setVotes(articleById.votes);
+    })
+    .catch((error) => {
+      console.error("Error fetching article:", error);
+      setArticle(null);
+    })
+    .finally(() => {
       setIsLoad(false);
     });
   }, [articleId]);
@@ -96,9 +103,14 @@ function ArticlePage() {
         Loading.....
       </p>
     );
-
+    if (!article)
+    return (
+      <div className="flex justify-center mx-auto max-w-2xl">
+        <p>Article not found</p>
+      </div>
+    );
   return (
-    <div className="flex justify-center mx-auto max-w-2xl">
+    <div className="flex justify-center mx-auto max-w-lg">
       <ToastContainer />
       {article ? (
         <div className="mt-4 rounded-lg border shadow-sm bg-white flex flex-col">
