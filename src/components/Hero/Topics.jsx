@@ -39,8 +39,8 @@ function Topics() {
   }
 
   return (
-    <section>
-      <h2 className="text-3xl text-center mt-4">Topics</h2>
+    <section className="">
+      <h2 className=" text-2xl md:text-4xl text-center font-bold mt-4">Topics</h2>
       <div className="flex flex-wrap justify-center mt-4 gap-6">
         {topics.map((topic) => (
           <Link

@@ -110,7 +110,7 @@ function ArticlePage() {
       </div>
     );
   return (
-    <div className="flex justify-center mx-auto max-w-lg">
+    <div className="flex justify-center mx-auto max-w-2xl">
       <ToastContainer />
       {article ? (
         <div className="mt-4 rounded-lg border shadow-sm bg-white flex flex-col">
@@ -123,7 +123,7 @@ function ArticlePage() {
               <span>{getTimeDifference(article.created_at)}</span>
             </p>
           </div>
-          <div className="p-6 max-h-96 overflow-hidden flex justify-between ">
+          <div className="p-6 max-h-96 overflow-hidden flex  pr-10 justify-between ">
             <img
               src={article.article_img_url}
               className="max-h-96"

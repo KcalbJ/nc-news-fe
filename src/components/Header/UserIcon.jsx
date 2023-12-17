@@ -10,9 +10,9 @@ function UserIcon() {
     setIsOpen(!isOpen);
   };
 
-  const handleLogout = () => {
-    console.log("Logging out...");
-  };
+  // const handleLogout = () => {
+  //   console.log("Logging out...");
+  // };
 
   return (
     <div className="">
@@ -26,19 +26,19 @@ function UserIcon() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-md">
           <div className="p-2">
-            <p className="text-gray-800">{user.username}</p>
+            <p className="text-gray-800">User:{user.username}</p>
           </div>
           <div className="border-t border-gray-300">
             <div className="p-2">
-              <p className="text-gray-800">{user.name}</p>
+              <p className="text-gray-800">Name:{user.name}</p>
             </div>
             <div className="border-t border-gray-300" />
-            <button
+            {/* <button
               className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
               onClick={handleLogout}
             >
               Logout
-            </button>
+            </button> */}
           </div>
         </div>
       )}

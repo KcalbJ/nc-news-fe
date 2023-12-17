@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 function ArticleCard({ article }) {
   return (
-    <div className="mt-4 rounded-lg border mx-auto shadow-sm bg-white flex flex-col">
+    <div className="mt-4 rounded-lg border mx-auto max-w-3xl shadow-sm bg-white flex flex-col">
       <div className="flex flex-col  space-y-1.5 p-6">
         <h3 className="text-2xl font-semibold leading-none tracking-tight">
           {article.title}
@@ -16,13 +16,13 @@ function ArticleCard({ article }) {
           <span>{getTimeDifference(article.created_at)}</span>
         </p>
       </div>
-      <div className="p-6 max-h-96 overflow-hidden flex justify-between">
+      <div className="p-6 max-h-96 overflow-hidden flex pr-10 justify-between">
         <img
           src={article.article_img_url}
           className="max-h-64"
           alt="article image"
         />
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col pl-2 justify-center">
           <p className="text-center">{article.votes}</p>
           <FiThumbsUp className="w-6 h-6" />
         </div>
