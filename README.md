@@ -2,7 +2,7 @@
 
 
 
-[Link to Hosted Version](<[https://nc-news-opvy.onrender.com](https://nc-newsli.netlify.app/?sort_by=created_at&order=desc)/>)
+[Link to Hosted Version](<(https://nc-newsli.netlify.app/?sort_by=created_at&order=desc)/>)
 
 ## Summary
 
